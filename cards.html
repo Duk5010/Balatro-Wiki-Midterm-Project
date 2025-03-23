@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Balatro Wiki - Cards</title>
+    <link rel="icon" type="image/png" href="/assets/balatro-jqb-logo.png" />
+    <script src="/script.js"></script>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        background-color: #121212;
+        background-image: linear-gradient(
+            rgba(0, 0, 0, 0.6),
+            rgba(0, 0, 0, 0.1)
+          ),
+          url("/assets/background.png");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        min-height: 100vh;
+      }
+
+      .navbar {
+        position: sticky;
+        top: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgb(10, 16, 29);
+        color: white;
+        padding: 0 30px;
+        height: 70px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 30px;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 16px;
+        transition: color 0.3s, background-color 0.3s;
+        padding: 8px 15px;
+        border-radius: 4px;
+      }
+
+      .nav-links a:hover {
+        color: #e94560;
+      }
+
+      .nav-links a.active {
+        color: #e94560;
+        font-weight: 600;
+        position: relative;
+      }
+
+      .nav-links a.active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 15%;
+        width: 70%;
+        height: 3px;
+        background-color: #e94560;
+        border-radius: 2px;
+      }
+
+      .search-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .search-bar {
+        display: flex;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.15);
+        border-radius: 25px;
+        padding: 6px 18px;
+        position: relative;
+      }
+
+      .search-input {
+        background: transparent;
+        border: none;
+        color: white;
+        outline: none;
+        width: 180px;
+        height: 36px;
+        font-size: 15px;
+      }
+
+      .search-input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .search-counter {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        min-width: 45px;
+        text-align: center;
+        display: none;
+        margin-left: 5px;
+      }
+
+      .search-counter.active {
+        display: block;
+      }
+
+      .content {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+      }
+
+      .highlight {
+        background-color: yellow;
+        color: black;
+      }
+
+      .current-highlight {
+        background-color: #ff9632;
+        color: black;
+      }
+
+      .search-notification {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background-color: #f44336;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: auto auto;
+        padding: 20px;
+      }
+
+      header {
+        text-align: center;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 3em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        letter-spacing: 2px;
+        font-weight: 800;
+      }
+
+      main {
+        grid-template-columns: 3fr 1fr;
+        gap: 30px;
+        align-items: start;
+      }
+
+      .content,
+      .sidebar {
+        background-color: rgba(10, 16, 29, 0.925);
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        margin-top: 0;
+      }
+      .content {
+        background-color: rgba(10, 16, 29, 0.925);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      h2 {
+        color: #e94560;
+        border-bottom: 2px solid #e94560;
+        padding-bottom: 10px;
+        margin-top: 0;
+        font-size: 1.8em;
+      }
+
+      h3 {
+        color: #fff;
+        margin-top: 30px;
+        font-size: 1.4em;
+      }
+
+      p {
+        margin-bottom: 20px;
+        font-size: 1.1em;
+      }
+
+      .feature-box {
+        background-color: rgba(30, 30, 66, 0.55);
+        border-radius: 10px;
+        padding: 10px;
+        margin: 20px 0;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        border-left: 4px solid #e94560;
+      }
+
+      /*Joker Start*/
+      .joker-card {
+        background: linear-gradient(135deg, #252550 0%, #1a1a36 100%);
+        border-radius: 15px;
+        padding: 20px;
+        margin: 20px 0;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        display: flex;
+        gap: 20px;
+      }
+
+      .joker-image {
+        background-color: #2c2c54;
+        width: 120px;
+        height: 170px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        flex-shrink: 0;
+      }
+
+      .joker-image img {
+        width: 100px;
+        height: 150px;
+      }
+
+      .joker-details {
+        flex-grow: 1;
+      }
+
+      .joker-details h3 {
+        color: #ffc500;
+        margin-top: 0;
+        margin-bottom: 10px;
+      }
+
+      .joker-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .joker-stat {
+        background-color: rgba(30, 30, 66, 0.55);
+        padding: 5px 10px;
+        border-radius: 5px;
+      }
+
+      .joker-cost {
+        color: #f5b244;
+        font-weight: bold;
+      }
+
+      .joker-stat .joker-description {
+        background-color: rgba(30, 30, 66, 0.55);
+        padding: 10px;
+        border-radius: 10px;
+        margin-top: 10px;
+      }
+
+      .joker-stat .rarity-common,
+      .rarity-uncommon,
+      .rarity-rare,
+      .rarity-legendary {
+        font-weight: bold;
+      }
+
+      .table-container {
+        overflow-x: auto;
+        margin: 30px 0;
+      }
+      /*Joker End*/
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: rgba(30, 30, 66, 0.55);
+      }
+
+      th,
+      td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #3a3a5e;
+      }
+
+      th {
+        background-color: rgba(233, 69, 96, 0.2);
+        color: #e94560;
+        font-weight: 600;
+      }
+
+      tr:hover {
+        background-color: rgba(233, 69, 96, 0.05);
+      }
+
+      .rarity-common {
+        color: #0093ff;
+      }
+
+      .rarity-uncommon {
+        color: #35bd86;
+      }
+
+      .rarity-rare {
+        color: #ff4c40;
+      }
+
+      .rarity-legendary {
+        color: #ab5bb5;
+      }
+
+      /*Tarot Start*/
+      .tarot-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin: 0 auto;
+        max-width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .tarot-card {
+        background: linear-gradient(135deg, #252550 0%, #1a1a36 100%);
+        border-radius: 15px;
+        padding: 15px;
+        margin: 10px 0;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        width: calc(33.33% - 20px);
+        max-width: 220px;
+        border: 1px solid rgba(255, 215, 0, 0.3);
+      }
+
+      .tarot-image {
+        background-color: #3c1642;
+        width: 160px;
+        height: 250px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        position: relative;
+        overflow: hidden;
+        border: 2px solid rgba(255, 215, 0, 0.4);
+      }
+
+      .tarot-image img {
+        width: 140px;
+        height: 230px;
+        object-fit: cover;
+      }
+
+      .tarot-details {
+        width: 100%;
+        text-align: center;
+      }
+
+      .tarot-details h3 {
+        color: #ffd700;
+        margin-top: 0;
+        margin-bottom: 8px;
+        font-family: "Playfair Display", serif;
+        font-size: 1.4rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .tarot-meaning {
+        background-color: rgba(10, 16, 29, 0.7);
+        padding: 10px;
+        border-radius: 10px;
+        margin-top: 8px;
+        border-left: 3px solid rgba(83, 112, 173, 0.925);
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .tarot-meaning p {
+        margin: 0;
+        font-size: 1rem;
+        color: #ffffff;
+        line-height: 1.3;
+      }
+
+      .tarot-divider {
+        width: 80%;
+        height: 1px;
+        background: linear-gradient(
+          to right,
+          transparent,
+          #ffd700,
+          transparent
+        );
+        margin: 5px auto;
+      }
+      /*Tarot End*/
+
+      /*Spectral Start*/
+      .spectral-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin: 0 auto;
+        max-width: 100%;
+      }
+      .spectral-card {
+        background: linear-gradient(135deg, #0a2342 0%, #112d4e 100%);
+        border-radius: 15px;
+        padding: 15px;
+        margin: 10px 0;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        width: calc(33.33% - 20px);
+        max-width: 220px;
+        border: 1px solid rgba(66, 214, 219, 0.3);
+      }
+      .spectral-image {
+        background-color: #1b3a5d;
+        width: 160px;
+        height: 250px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        position: relative;
+        overflow: hidden;
+        border: 2px solid rgba(66, 214, 219, 0.4);
+      }
+      .spectral-image img {
+        width: 140px;
+        height: 230px;
+        object-fit: cover;
+      }
+      .spectral-details {
+        width: 100%;
+        text-align: center;
+      }
+      .spectral-details h3 {
+        color: #42d6db;
+        margin-top: 0;
+        margin-bottom: 8px;
+        font-family: "Playfair Display", serif;
+        font-size: 1.4rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .spectral-meaning {
+        background-color: rgba(27, 58, 93, 0.6);
+        padding: 10px;
+        border-radius: 10px;
+        margin-top: 8px;
+        border-left: 3px solid #42d6db;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .spectral-meaning p {
+        margin: 0;
+        font-size: 0.75rem;
+        color: #ffffff;
+        line-height: 1.3;
+      }
+      .spectral-divider {
+        width: 80%;
+        height: 1px;
+        background: linear-gradient(
+          to right,
+          transparent,
+          #42d6db,
+          transparent
+        );
+        margin: 5px auto;
+      }
+      /*Spectral End*/
+
+      /*Planet Start*/
+      .planet-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin: 0 auto;
+        max-width: 100%;
+      }
+
+      .planet-card {
+        background: linear-gradient(135deg, #439ea7 0%, #2e6569 100%);
+        border-radius: 15px;
+        padding: 15px;
+        margin: 10px 0;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        width: calc(33.33% - 20px);
+        max-width: 220px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .planet-image {
+        background-color: #2f7f85;
+        width: 160px;
+        height: 250px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        position: relative;
+        overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+      }
+
+      .planet-image img {
+        width: 140px;
+        height: 230px;
+        object-fit: cover;
+      }
+
+      .planet-details {
+        width: 100%;
+        text-align: center;
+      }
+
+      .planet-details h3 {
+        color: #ffffff;
+        margin-top: 0;
+        margin-bottom: 8px;
+        font-family: "Playfair Display", serif;
+        font-size: 1.4rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .planet-meaning {
+        background-color: rgba(27, 68, 71, 0.6);
+        padding: 10px;
+        border-radius: 10px;
+        margin-top: 8px;
+        border-left: 3px solid #ffffff;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .planet-meaning p {
+        margin: 0;
+        font-size: 0.75rem;
+        color: #ffffff;
+        line-height: 1.3;
+      }
+
+      .planet-divider {
+        width: 80%;
+        height: 1px;
+        background: linear-gradient(
+          to right,
+          transparent,
+          #ffffff,
+          transparent
+        );
+        margin: 5px auto;
+      }
+      /*Planet End*/
+
+      @media (max-width: 992px) {
+        .tarot-card {
+          width: calc(50% - 20px);
+          max-width: 220px;
+        }
+        .spectral-card {
+          width: calc(50% - 20px);
+          max-width: 220px;
+        }
+        .planet-card {
+          width: calc(50% - 20px);
+          max-width: 220px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .navbar {
+          flex-direction: column;
+          height: auto;
+          padding: 15px;
+          gap: 15px;
+        }
+
+        .search-container {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .search-bar {
+          flex-grow: 1;
+        }
+
+        .search-input {
+          width: 100%;
+        }
+
+        header img {
+          max-width: 80%;
+        }
+
+        main {
+          grid-template-columns: 1fr;
+        }
+
+        table {
+          font-size: 0.9rem;
+        }
+
+        th,
+        td {
+          padding: 10px 12px;
+        }
+
+        .joker-card {
+          flex-direction: column;
+          align-items: center;
+          gap: 15px;
+          padding: 15px;
+        }
+
+        .joker-image {
+          width: 100px;
+          height: 150px;
+        }
+
+        .joker-image img {
+          width: 80px;
+          height: 130px;
+        }
+
+        .joker-details {
+          width: 100%;
+          text-align: center;
+        }
+
+        .joker-details h3 {
+          text-align: center;
+        }
+
+        .joker-stats {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .tarot-card {
+          width: calc(50% - 15px);
+          padding: 12px;
+        }
+
+        .tarot-image {
+          width: 140px;
+          height: 230px;
+        }
+
+        .tarot-image img {
+          width: 120px;
+          height: 210px;
+        }
+
+        .tarot-details h3 {
+          font-size: 1.2rem;
+        }
+
+        .spectral-card {
+          width: calc(50% - 15px);
+          padding: 12px;
+        }
+
+        .spectral-image {
+          width: 140px;
+          height: 230px;
+        }
+
+        .spectral-image img {
+          width: 120px;
+          height: 210px;
+        }
+
+        .spectral-details h3 {
+          font-size: 1.2rem;
+        }
+
+        .planet-card {
+          width: calc(50% - 15px);
+          padding: 12px;
+        }
+
+        .planet-image {
+          width: 140px;
+          height: 230px;
+        }
+
+        .planet-image img {
+          width: 120px;
+          height: 210px;
+        }
+
+        .planet-details h3 {
+          font-size: 1.2rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        header img {
+          max-width: 70%;
+        }
+        table {
+          font-size: 0.8rem;
+        }
+
+        th,
+        td {
+          padding: 8px 10px;
+        }
+
+        table th:nth-child(2),
+        table td:nth-child(2) {
+          max-width: 160px;
+        }
+
+        .joker-card {
+          padding: 12px;
+        }
+
+        .joker-stats {
+          grid-template-columns: 1fr;
+        }
+
+        .joker-details h3 {
+          font-size: 1.2rem;
+        }
+
+        .joker-description p {
+          font-size: 0.9rem;
+        }
+
+        .tarot-card {
+          width: 100%;
+          max-width: 180px;
+          padding: 10px;
+        }
+
+        .tarot-image {
+          width: 130px;
+          height: 210px;
+        }
+
+        .tarot-image img {
+          width: 110px;
+          height: 190px;
+        }
+
+        .tarot-details h3 {
+          font-size: 1.1rem;
+        }
+
+        .tarot-meaning {
+          height: 60px;
+        }
+
+        .tarot-meaning p {
+          font-size: 0.7rem;
+        }
+
+        .spectral-card {
+          width: 100%;
+          max-width: 180px;
+          padding: 10px;
+        }
+
+        .spectral-image {
+          width: 130px;
+          height: 210px;
+        }
+
+        .spectral-image img {
+          width: 110px;
+          height: 190px;
+        }
+
+        .spectral-details h3 {
+          font-size: 1.1rem;
+        }
+
+        .spectral-meaning {
+          height: 60px;
+        }
+
+        .spectral-meaning p {
+          font-size: 0.7rem;
+        }
+        .planet-card {
+          width: 100%;
+          max-width: 180px;
+          padding: 10px;
+        }
+
+        .planet-image {
+          width: 130px;
+          height: 210px;
+        }
+
+        .planet-image img {
+          width: 110px;
+          height: 190px;
+        }
+
+        .planet-details h3 {
+          font-size: 1.1rem;
+        }
+
+        .planet-meaning {
+          height: 60px;
+        }
+
+        .planet-meaning p {
+          font-size: 0.7rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-links">
+        <a href="index.html" id="homeLink">Home</a>
+        <a href="rules.html" id="rulesLink">Rules/Gameplay</a>
+        <a href="#" class="active" id="cardsLink">Cards</a>
+      </div>
+      <div class="search-container">
+        <div class="search-bar">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search..."
+            id="searchInput"
+          />
+          <div class="search-counter" id="searchCounter">0/0</div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="search-notification" id="searchNotification">
+      No results found
+    </div>
+    <div class="container">
+      <header>
+        <img src="/assets/logo.png" />
+        <h1>Cards</h1>
+      </header>
+
+      <main>
+        <div class="content">
+          <h2>Overview</h2>
+          <p>
+            In Balatro, a roguelike deck-building game, players can enhance
+            their strategies using various card types, including the Joker Cards
+            and Consumables such as Tarot, Spectral, and Planet Cards. Here's an
+            overview of these card categories:
+          </p>
+          <h2>Joker Cards</h2>
+          <p>
+            Jokers are special cards that provide unique effects, bonuses, and
+            multipliers to your poker hands. Collecting and strategically
+            combining Jokers is key to success in Balatro.
+            <br />
+            <br />
+            At the start of each run, you're provided with one Common Joker.
+            Additional Jokers can be purchased from the Shop for Chips or found
+            in various events. You can have up to 8 active Jokers at once, with
+            additional slots available through upgrades.
+          </p>
+          <p>
+            Joker Cards are unique additions to your deck that provide special
+            abilities or effects during your run. They can be acquired directly
+            from the shop or through Buffoon Packs. The shop typically offers up
+            to two Joker Cards per visit, with the following rarity
+            distribution:
+          </p>
+          <ul>
+            <li>
+              <strong class="rarity-common">Common Jokers:</strong> 70% chance
+              of appearing (Basic effects, affordable)
+            </li>
+            <li>
+              <strong class="rarity-uncommon">Uncommon Jokers:</strong> 25%
+              chance of appearing (Enhanced effects)
+            </li>
+            <li>
+              <strong class="rarity-rare">Rare Jokers:</strong> 5% chance of
+              appearing (Powerful effects)
+            </li>
+            <li>
+              <strong class="rarity-legendary">Legendary Jokers </strong>
+              are exceptionally rare and can only be obtained through specific
+              means, such as using "The Soul" Spectral Card.
+            </li>
+          </ul>
+          <h3>Featured Jokers</h3>
+
+          <div class="joker-card">
+            <div class="joker-image">
+              <img src="/assets/cards/joker-cards/Credit_Card.png" />
+            </div>
+            <div class="joker-details">
+              <h3>Credit Card</h3>
+              <div class="joker-stats">
+                <div class="joker-stat">
+                  <span class="rarity-common"> Common</span>
+                </div>
+                <div class="joker-stat joker-cost">Cost: $8</div>
+              </div>
+              <div class="joker-description">
+                <p>
+                  It allows you to have up to $20 in debt. It means you can
+                  spend an additional $20, even if your money is $0.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="joker-card">
+            <div class="joker-image">
+              <img src="/assets/cards/joker-cards/Golden_Joker.png" />
+            </div>
+            <div class="joker-details">
+              <h3>Golden Joker</h3>
+              <div class="joker-stats">
+                <div class="joker-stat">
+                  <span class="rarity-common">Common</span>
+                </div>
+                <div class="joker-stat joker-cost">Cost: $6</div>
+              </div>
+              <div class="joker-description">
+                <p>It provides an extra $4 at the end of each blind.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="joker-card">
+            <div class="joker-image">
+              <img src="/assets/cards/joker-cards/Joker.png" />
+            </div>
+            <div class="joker-details">
+              <h3>Joker</h3>
+              <div class="joker-stats">
+                <div class="joker-stat">
+                  <span class="rarity-common">Common</span>
+                </div>
+                <div class="joker-stat joker-cost">Cost: $2</div>
+              </div>
+              <div class="joker-description">
+                <p>It provides +4 Mult to all played hands.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="joker-card">
+            <div class="joker-image">
+              <img src="/assets/cards/joker-cards/Misprint.png" />
+            </div>
+            <div class="joker-details">
+              <h3>Misprint</h3>
+              <div class="joker-stats">
+                <div class="joker-stat">
+                  <span class="rarity-common">Common</span>
+                </div>
+                <div class="joker-stat joker-cost">Cost: $4</div>
+              </div>
+              <div class="joker-description">
+                <p>
+                  It adds a whole number between +0 Mult and +23 Mult
+                  (inclusive).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="joker-card">
+            <div class="joker-image">
+              <img src="/assets/cards/joker-cards/Splash.png" />
+            </div>
+            <div class="joker-details">
+              <h3>Splash</h3>
+              <div class="joker-stats">
+                <div class="joker-stat">
+                  <span class="rarity-common">Common</span>
+                </div>
+                <div class="joker-stat joker-cost">Cost: $3</div>
+              </div>
+              <div class="joker-description">
+                <p>Every played card counts in scoring</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="joker-card">
+            <div class="joker-image">
+              <img src="/assets/cards/joker-cards/Astronomer.png" />
+            </div>
+            <div class="joker-details">
+              <h3>Astronomer</h3>
+              <div class="joker-stats">
+                <div class="joker-stat">
+                  <span class="rarity-uncommon">Uncommon</span>
+                </div>
+                <div class="joker-stat joker-cost">Cost: $8</div>
+              </div>
+              <div class="joker-description">
+                <p>
+                  It allows you to gain all /Planet and /Celestial Booster packs
+                  for free.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="joker-card">
+            <div class="joker-image">
+              <img src="/assets/cards/joker-cards/Hologram.png" />
+            </div>
+            <div class="joker-details">
+              <h3>Hologram</h3>
+              <div class="joker-stats">
+                <div class="joker-stat">
+                  <span class="rarity-uncommon">Uncommon</span>
+                </div>
+                <div class="joker-stat joker-cost">Cost: $7</div>
+              </div>
+              <div class="joker-description">
+                <p>
+                  This Joker gains X0.25 Mult every time a playing card is added
+                  to your deck.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="joker-card">
+            <div class="joker-image">
+              <img src="/assets/cards/joker-cards/Blueprint.png" />
+            </div>
+            <div class="joker-details">
+              <h3>Blueprint</h3>
+              <div class="joker-stats">
+                <div class="joker-stat">
+                  <span class="rarity-rare">Rare</span>
+                </div>
+                <div class="joker-stat joker-cost">Cost: $10</div>
+              </div>
+              <div class="joker-description">
+                <p>Copies ability of Joker to the right.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="joker-card">
+            <div class="joker-image">
+              <img src="/assets/cards/joker-cards/DNA.png" />
+            </div>
+            <div class="joker-details">
+              <h3>DNA</h3>
+              <div class="joker-stats">
+                <div class="joker-stat">
+                  <span class="rarity-rare">Rare</span>
+                </div>
+                <div class="joker-stat joker-cost">Cost: $8</div>
+              </div>
+              <div class="joker-description">
+                <p>
+                  If first hand of round has only 1 card, add a permanent copy
+                  to deck and draw it to hand.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="joker-card">
+            <div class="joker-image">
+              <img src="/assets/cards/joker-cards/Chicot.png" />
+            </div>
+            <div class="joker-details">
+              <h3>DNA</h3>
+              <div class="joker-stats">
+                <div class="joker-stat">
+                  <span class="rarity-legendary">Legendary</span>
+                </div>
+                <div class="joker-stat joker-cost">Cost: N/A</div>
+              </div>
+              <div class="joker-description">
+                <p>Disables effect of every Boss Blind.</p>
+              </div>
+            </div>
+          </div>
+          <h3>Consumables: Tarot, Spectral, and Planet Cards</h3>
+          <p>
+            Consumable cards offer immediate, one-time effects that can
+            significantly influence your gameplay. They are primarily obtained
+            through specific Booster Packs:
+          </p>
+          <ul>
+            <li>
+              <strong>Tarot Cards:</strong> These cards focus on altering your
+              playing cards, such as changing their suits or ranks, and can also
+              create new Jokers or provide additional benefits. They are
+              obtained from Arcana Packs.
+            </li>
+            <li>
+              <strong>Spectral Cards:</strong> Offering powerful effects,
+              Spectral Cards often come with certain costs, like destroying
+              existing cards to gain substantial bonuses. They can be acquired
+              through Spectral Packs.
+            </li>
+            <li>
+              <strong>Planet Cards:</strong> These cards enhance the point value
+              of specific hands, allowing for strategic amplification of scores.
+              They are available from Celestial Packs.
+            </li>
+          </ul>
+          <p>
+            These consumable cards are stored in dedicated slots and can be
+            utilized at strategic moments to maximize their impact during your
+            run.
+          </p>
+
+          <br />
+
+          <h2>Tarot Cards</h2>
+          <p>
+            Tarot Cards are used to modify various aspects of the playing cards
+            in the deck, such as their suit or rank. They are also capable of
+            giving cards Enhancements, giving them additional effects, such as
+            giving extra chips or multiplier when scored. Some of them offer
+            cash, generate new jokers or even create more consumables.
+          </p>
+
+          <div class="tarot-container">
+            <div class="tarot-card">
+              <div class="tarot-image">
+                <img
+                  src="/assets/cards/tarot-cards/Tarot_The_Fool.png"
+                  alt="The Fool"
+                />
+              </div>
+              <div class="tarot-details">
+                <h3>The Fool (0)</h3>
+                <div class="tarot-divider"></div>
+                <div class="tarot-meaning">
+                  <p>
+                    Creates the last Tarot or Planet card used during this run
+                    The Fool excluded
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="tarot-card">
+              <div class="tarot-image">
+                <img
+                  src="/assets/cards/tarot-cards/Tarot_The_Hermit.png"
+                  alt="The Hermit"
+                />
+              </div>
+              <div class="tarot-details">
+                <h3>The Hermit (IX)</h3>
+                <div class="tarot-divider"></div>
+                <div class="tarot-meaning">
+                  <p>Doubles money <br />(Max of $20)</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="tarot-card">
+              <div class="tarot-image">
+                <img
+                  src="/assets/cards/tarot-cards/Tarot_Death.png"
+                  alt="Death"
+                />
+              </div>
+              <div class="tarot-details">
+                <h3>Death (XIII)</h3>
+                <div class="tarot-divider"></div>
+                <div class="tarot-meaning">
+                  <p>
+                    Select 2 cards, convert the left card into the right card
+                    (Drag to rearrange)
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tarot-container">
+            <div class="tarot-card">
+              <div class="tarot-image">
+                <img
+                  src="/assets/cards/tarot-cards/Tarot_Judgement.png"
+                  alt="Judgement"
+                />
+              </div>
+              <div class="tarot-details">
+                <h3>Judgement (XX)</h3>
+                <div class="tarot-divider"></div>
+                <div class="tarot-meaning">
+                  <p>Creates a random Joker card (Must have room)</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="tarot-card">
+              <div class="tarot-image">
+                <img
+                  src="/assets/cards/tarot-cards/Tarot_Strength.png"
+                  alt="Strength"
+                />
+              </div>
+              <div class="tarot-details">
+                <h3>Strength (XI)</h3>
+                <div class="tarot-divider"></div>
+                <div class="tarot-meaning">
+                  <p>Illusion, fear, anxiety, subconscious</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h2>Spectral Cards</h2>
+          <p>
+            Spectral Cards are similar to Tarot Cards in the sense that they
+            generally modify the playing cards in the deck as well, though to a
+            much greater extent than Tarot Cards. In exchange for these large
+            modifications, they usually disadvantage the player in another
+            aspect of gameplay, such as reducing hand size, destroying
+            additional cards or consuming all money.
+          </p>
+
+          <div class="spectral-container">
+            <div class="spectral-card">
+              <div class="spectral-image">
+                <img
+                  src="/assets/cards/spectral-cards/Spectral_Ankh.png"
+                  alt="Spectral Card 1"
+                />
+              </div>
+              <div class="spectral-details">
+                <h3>Ankh</h3>
+                <div class="spectral-divider"></div>
+                <div class="spectral-meaning">
+                  <p>
+                    Creates a copy of 1 of your Jokers at random, then destroys
+                    the others, leaving you with two identical Jokers.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="spectral-card">
+              <div class="spectral-image">
+                <img
+                  src="/assets/cards/spectral-cards/Spectral_The_Soul.png"
+                  alt="Spectral Card 2"
+                />
+              </div>
+              <div class="spectral-details">
+                <h3>Soul</h3>
+                <div class="spectral-divider"></div>
+                <div class="spectral-meaning">
+                  <p>Creates a Legendary Joker</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="spectral-card">
+              <div class="spectral-image">
+                <img
+                  src="/assets/cards/spectral-cards/Spectral_Black_Hole.png"
+                  alt="Spectral Card 3"
+                />
+              </div>
+              <div class="spectral-details">
+                <h3>Black Hole</h3>
+                <div class="spectral-divider"></div>
+                <div class="spectral-meaning">
+                  <p>Upgrades every poker hand by one level.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h2>Planet Cards</h2>
+          <p>
+            Planet Cards level up their associated poker hand type by increasing
+            the base value of chips and multiplier. There are no unlock
+            conditions for Planet Cards.
+          </p>
+          <div class="planet-container">
+            <div class="planet-card">
+              <div class="planet-image">
+                <img
+                  src="/assets/cards/planet-cards/Planet_Earth.png"
+                  alt="Planet Card 1"
+                />
+              </div>
+              <div class="planet-details">
+                <h3>Earth</h3>
+                <div class="planet-divider"></div>
+                <div class="planet-meaning">
+                  <p>+2 Mult and +25 Chip to a Full House</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="planet-card">
+              <div class="planet-image">
+                <img
+                  src="/assets/cards/planet-cards/Planet_Mars.png"
+                  alt="Planet Card 2"
+                />
+              </div>
+              <div class="planet-details">
+                <h3>Venus</h3>
+                <div class="planet-divider"></div>
+                <div class="planet-meaning">
+                  <p>+3 Mult and +30 Chips to a Four of a Kind</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="planet-card">
+              <div class="planet-image">
+                <img
+                  src="/assets/cards/planet-cards/Planet_Neptune.png"
+                  alt="Planet Card 3"
+                />
+              </div>
+              <div class="planet-details">
+                <h3>Neptune</h3>
+                <div class="planet-divider"></div>
+                <div class="planet-meaning">
+                  <p>+4 Mult and +40 Chips to a Straight Flush</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="planet-container">
+            <div class="planet-card">
+              <div class="planet-image">
+                <img
+                  src="/assets/cards/planet-cards/Planet_Ceres.png"
+                  alt="Planet Card 1"
+                />
+              </div>
+              <div class="planet-details">
+                <h3>Ceres</h3>
+                <div class="planet-divider"></div>
+                <div class="planet-meaning">
+                  <p>+4 Mult and +40 Chips to a Flush House</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="planet-card">
+              <div class="planet-image">
+                <img
+                  src="/assets/cards/planet-cards/Planet_Eris.png"
+                  alt="Planet Card 2"
+                />
+              </div>
+              <div class="planet-details">
+                <h3>Eris</h3>
+                <div class="planet-divider"></div>
+                <div class="planet-meaning">
+                  <p>+3 Mult and +50 Chips to a Flush Five</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
