@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Balatro Wiki - Home</title>
+    <script src="/script.js"></script>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        background-color: #121212;
+        background-image: linear-gradient(
+            rgba(0, 0, 0, 0.6),
+            rgba(0, 0, 0, 0.1)
+          ),
+          url("/assets/background.png");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        min-height: 100vh;
+      }
+
+      .navbar {
+        position: sticky;
+        top: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgb(10, 16, 29);
+        color: white;
+        padding: 0 30px;
+        height: 70px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 30px;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 16px;
+        transition: color 0.3s, background-color 0.3s;
+        padding: 8px 15px;
+        border-radius: 4px;
+      }
+
+      .nav-links a:hover {
+        color: #e94560;
+      }
+
+      .nav-links a.active {
+        color: #e94560;
+        font-weight: 600;
+        position: relative;
+      }
+
+      .nav-links a.active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 15%;
+        width: 70%;
+        height: 3px;
+        background-color: #e94560;
+        border-radius: 2px;
+      }
+
+      .search-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .search-bar {
+        display: flex;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.15);
+        border-radius: 25px;
+        padding: 6px 18px;
+        position: relative;
+      }
+
+      .search-input {
+        background: transparent;
+        border: none;
+        color: white;
+        outline: none;
+        width: 180px;
+        height: 36px;
+        font-size: 15px;
+      }
+
+      .search-input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .search-counter {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        min-width: 45px;
+        text-align: center;
+        display: none;
+        margin-left: 5px;
+      }
+
+      .search-counter.active {
+        display: block;
+      }
+
+      .content {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+      }
+
+      .highlight {
+        background-color: yellow;
+        color: black;
+      }
+
+      .current-highlight {
+        background-color: #ff9632;
+        color: black;
+      }
+
+      .search-notification {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background-color: #f44336;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: auto auto;
+        padding: 20px;
+      }
+
+      header {
+        text-align: center;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 3em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        letter-spacing: 2px;
+        font-weight: 800;
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        gap: 30px;
+        align-items: start;
+      }
+
+      .content,
+      .sidebar {
+        background-color: rgba(10, 16, 29, 0.925);
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        margin-top: 0;
+      }
+      .content {
+        background-color: rgba(10, 16, 29, 0.925);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .sidebar {
+        background-color: rgba(10, 16, 29, 0.925);
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        height: fit-content;
+      }
+
+      h2 {
+        color: #e94560;
+        border-bottom: 2px solid #e94560;
+        padding-bottom: 10px;
+        margin-top: 0;
+        font-size: 1.8em;
+      }
+
+      h3 {
+        color: #fff;
+        margin-top: 30px;
+        font-size: 1.4em;
+      }
+
+      p {
+        margin-bottom: 20px;
+        font-size: 1.1em;
+      }
+      a {
+        text-decoration: none; /* Removes default underline */
+        color: white;
+        position: relative;
+      }
+
+      a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -2px; /* Adjusts distance from text */
+        width: 100%;
+        height: 2px; /* Thickness of the underline */
+        background-color: white;
+        transition: 0.3s ease-in-out;
+        opacity: 0;
+      }
+
+      a:hover::after {
+        opacity: 1;
+      }
+
+      .feature-box {
+        background-color: rgba(30, 30, 66, 0.55);
+        border-radius: 10px;
+        padding: 10px;
+        margin: 20px 0;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        border-left: 4px solid #e94560;
+      }
+
+      .card-container {
+        display: flex;
+        justify-content: space-between;
+        margin: 30px 0;
+        perspective: 1000px;
+      }
+
+      .intro-card {
+        background: linear-gradient(135deg, #252550 0%, #1a1a36 100%);
+        border-radius: 15px;
+        padding: 20px;
+        flex: 1;
+        margin: 0 10px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        transform-style: preserve-3d;
+        transition: transform 0.5s ease;
+      }
+
+      .intro-card:hover {
+        transform: rotateY(10deg);
+      }
+
+      .intro-card h3 {
+        color: #e94560;
+        margin-top: 0;
+      }
+
+      .intro-card .card-image {
+        background-color: #2c2c54;
+        height: 120px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2em;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .quote {
+        font-style: italic;
+        color: #dddddd;
+        padding: 15px;
+        border-left: 3px solid #e94560;
+        background-color: rgba(233, 69, 96, 0.1);
+        margin: 20px 0;
+        border-radius: 10px;
+      }
+
+      .button {
+        display: inline-block;
+        background-color: #e94560;
+        color: white;
+        padding: 12px 25px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+      }
+
+      .button:hover {
+        background-color: #d63d57;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 50px;
+        padding: 20px;
+        background-color: #191930;
+        color: #a5a5a5;
+        border-radius: 15px 15px 0 0;
+      }
+
+      @media (max-width: 768px) {
+        .navbar {
+          flex-direction: column;
+          height: auto;
+          padding: 15px;
+          gap: 15px;
+        }
+
+        .search-container {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .search-bar {
+          flex-grow: 1;
+        }
+
+        .search-input {
+          width: 100%;
+        }
+
+        main {
+          grid-template-columns: 1fr;
+        }
+
+        .card-container {
+          flex-direction: column;
+        }
+
+        .intro-card {
+          margin: 10px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-links">
+        <a href="#" class="active" id="homeLink">Home</a>
+        <a href="rules.html" id="rulesLink">Rules/Gameplay</a>
+        <a href="cards.html" id="cardsLink">Cards</a>
+      </div>
+      <div class="search-container">
+        <div class="search-bar">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search..."
+            id="searchInput"
+          />
+          <div class="search-counter" id="searchCounter">0/0</div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="search-notification" id="searchNotification">
+      No results found
+    </div>
+
+    <div class="container">
+      <header>
+        <img src="/assets/logo.png" />
+      </header>
+
+      <main>
+        <div class="content">
+          <h2>Welcome to the Balatro Wiki</h2>
+
+          <p>
+            Balatro is a critically acclaimed roguelike deckbuilder designed by
+            LocalThunk and published by Playstack. Released in February 2024,
+            the game quickly became a hit for its innovative gameplay that
+            combines poker mechanics with roguelike elements and deckbuilding
+            strategy.
+          </p>
+          <div class="quote">
+            "Balatro is a deck-building roguelike where you must play poker
+            hands and earn chips to defeat enemy blinds. Enhance your deck of
+            playing cards, buy Jokers to modify each hand you play, and discover
+            new and wild synergies to win!" ~Official Steam description
+          </div>
+
+          <h3>What Makes Balatro Special?</h3>
+          <p>
+            Unlike traditional card games, Balatro uses poker hands as a
+            foundation but transforms the experience with special Joker cards
+            that provide unique effects and multipliers. Players build their
+            deck by collecting cards, Jokers, and other items as they progress
+            through increasingly difficult rounds called "Antes."
+          </p>
+
+          <h3>Game Overview</h3>
+          <p>
+            In Balatro, you start with a standard 52-card deck and must create
+            poker hands (pairs, straights, flushes, etc.) to defeat enemies
+            called "Stakes." As you progress, you'll collect Joker cards that
+            provide powerful effects and multipliers, enhancing your poker hands
+            and allowing you to achieve increasingly higher scores.
+          </p>
+
+          <div class="card-container">
+            <div class="intro-card">
+              <div class="card-image">Strategic Depth</div>
+              <h3>Endless Possibilities</h3>
+              <p>
+                With over 100 unique Jokers, dozens of Tarot and Planet cards,
+                and multiple playable characters, each run offers a new
+                experience and strategic challenge.
+              </p>
+            </div>
+
+            <div class="intro-card">
+              <div class="card-image">Roguelike Elements</div>
+              <h3>Permadeath & Progression</h3>
+              <p>
+                Each run is unique, with permadeath and procedurally generated
+                content. However, successful runs unlock new characters and game
+                modes.
+              </p>
+            </div>
+
+            <div class="intro-card">
+              <div class="card-image">Accessibility</div>
+              <h3>Easy to Learn</h3>
+              <p>
+                Basic poker knowledge helps, but the game includes comprehensive
+                tutorials and is accessible to newcomers while offering depth
+                for veterans.
+              </p>
+            </div>
+          </div>
+
+          <h3>Game History</h3>
+          <p>
+            Balatro was developed by solo developer LocalThunk (the pseudonym of
+            game designer Ezra "Chevy" Ray) over approximately two years. The
+            game was initially released on February 20, 2024, and quickly
+            garnered critical acclaim for its innovative mechanics and addictive
+            gameplay. Within its first week, Balatro sold over 250,000 copies
+            across all platforms.
+          </p>
+
+          <div class="feature-box">
+            <h3>Did You Know?</h3>
+            <p>
+              The word "Balatro" comes from Latin, referring to a professional
+              jester or fool – fitting for a game centered around Joker cards!
+            </p>
+          </div>
+        </div>
+
+        <div class="sidebar">
+          <h2>Quick Facts</h2>
+          <ul>
+            <li><strong>Developer:</strong> LocalThunk</li>
+            <li><strong>Publisher:</strong> Playstack</li>
+            <li><strong>Release Date:</strong> February 20, 2024</li>
+            <li>
+              <strong>Platforms:</strong> PC, Nintendo Switch, PlayStation, Xbox
+            </li>
+            <li><strong>Genre:</strong> Roguelike, Deckbuilder</li>
+            <li><strong>Price:</strong> $14.99 USD</li>
+          </ul>
+
+          <h3>Key Features</h3>
+          <ul>
+            <li>Poker-based gameplay</li>
+            <li>100+ unique Joker cards</li>
+            <li>Tarot and Planet cards</li>
+            <li>Multiple playable characters</li>
+            <li>Daily challenges</li>
+            <li>Eternal mode</li>
+          </ul>
+
+          <h3>Game Updates</h3>
+          <p>Version 1.0.2f - March, 2025</p>
+          <ul>
+            <li>New Joker cards added</li>
+            <li>Balance adjustments</li>
+            <li>Bug fixes</li>
+            <li>New accessibility options</li>
+          </ul>
+
+          <h3>Community Links</h3>
+          <ul>
+            <li>
+              <a href="https://discord.com/invite/balatro" target="_blank"
+                >Official Discord</a
+              >
+            </li>
+            <li>
+              <a href="https://www.reddit.com/r/Balatro/" target="_blank"
+                >Reddit Community</a
+              >
+            </li>
+            <li>
+              <a href="https://twitter.com/balatrogame" target="_blank"
+                >Official Twitter</a
+              >
+            </li>
+            <li>
+              <a href="https://www.speedrun.com/balatro" target="_blank"
+                >Speedrunning Leaderboards</a
+              >
+            </li>
+          </ul>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
