@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", initializeSearch);
+
+function initializeSearch() {
   const searchInput = document.getElementById("searchInput");
   const searchCounter = document.getElementById("searchCounter");
   const notification = document.getElementById("searchNotification");
@@ -117,24 +119,34 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   let debounceTimeout;
-  searchInput.addEventListener("input", function () {
+  
+  const newSearchInput = searchInput.cloneNode(true);
+  searchInput.parentNode.replaceChild(newSearchInput, searchInput);
+  
+  newSearchInput.addEventListener("input", function () {
     clearTimeout(debounceTimeout);
     debounceTimeout = setTimeout(() => {
       highlightText(this.value);
     }, 300);
   });
 
-  searchInput.addEventListener("focus", function () {
+  newSearchInput.addEventListener("focus", function () {
     if (this.value.trim() !== "" && highlights.length > 0) {
       searchCounter.classList.add("active");
     }
   });
 
-  searchInput.addEventListener("keydown", function (e) {
+  newSearchInput.addEventListener("keydown", function (e) {
     if (e.key === "Enter" && highlights.length > 0) {
       e.preventDefault();
       currentHighlightIndex = (currentHighlightIndex + 1) % highlights.length;
       updateHighlightState();
     }
   });
+}
+
+document.addEventListener('click', function(e) {
+  if (e.target.tagName === 'A' && e.target.getAttribute('href')) {
+    setTimeout(initializeSearch, 300);
+  }
 });
